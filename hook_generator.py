@@ -7,19 +7,22 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
+API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Get the API key from environment variable
-API_KEY = os.getenv("OPENAI_API_KEY")
+import streamlit as st
+api_key = st.secrets["OPENAI_API_KEY"]
+
 
 # Raise error early if API key is missing
 if not API_KEY:
     raise ValueError("OPENAI_API_KEY is missing in environment variables.")
 
-# Initialize OpenAI-compatible client for DeepSeek via OpenRouter
+#Initialize OpenAI-compatible client for DeepSeek via OpenRouter
 client = OpenAI(
     api_key=API_KEY,
-    base_url="https://openrouter.ai/api/v1"
-)
+        base_url="https://openrouter.ai/api/v1"
+        )
 
 def generate_hooks(topic):
     """

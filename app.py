@@ -6,6 +6,11 @@ st.set_page_config(page_title="HookyFY Lite", layout="centered")
 
 # Title and description
 st.markdown("<h1 style='text-align: center;'>🚀 HookyFY Lite</h1>", unsafe_allow_html=True)
+st.markdown("### 💡 Write Viral Hooks in 10 Seconds. Powered by AI.")
+st.markdown("**🔥 First 20 users get lifetime access free — DM ‘HOOKY’ to claim.**")
+st.markdown("---")
+st.markdown("👥 Want custom features or faster outputs? DM me on Instagram [@awkenofficial](https://instagram.com/awkenofficial)")
+
 st.markdown("##### Generate 3 viral Instagram hooks + captions instantly")
 
 # Topic input
