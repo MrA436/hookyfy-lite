@@ -28,28 +28,27 @@ client: OpenAI = OpenAI(
 
 def generate_hooks(topic: str) -> str:
     """
-    Generate 3 hook + caption + CTA + reward pairs using Mistral-compatible prompt.
+    Generate 3 Instagram content pairs with short, scroll-stopping hooks and concise reward payoffs.
 
     Args:
         topic (str): Topic to generate content for.
 
     Returns:
-        str: The full raw text response from the model or a warning message.
+        str: Raw model response or error message.
     """
-    prompt: str = (
-        f"You are a viral content strategist. Generate 3 Instagram content pairs for the topic: '{topic}'.\n\n"
+    prompt = (
+        f"You are a viral content strategist. Generate 3 Instagram content pairs on '{topic}'.\n\n"
         "Each pair must follow this exact format:\n"
-        "Hook:\n<Strong, emotional, scroll-stopping line>\n\n"
+        "Hook:\n<A very short, strong, emotional, scroll-stopping line (max 5 words) that grabs attention immediately>\n\n"
         "Caption:\n<2–3 lines explaining the hook in a relatable way>\n\n"
-        "CTA:\n<A strong call to action like 'Save this now' or 'Follow for more'>\n\n"
-        "Reward:\n<One-line emotional or practical benefit they’ll get if they follow this advice>\n\n"
-        "Only return exactly 3 such pairs.\n"
-        "Separate each pair with this: ---"
+        "CTA:\n<A clear call to action like 'Save this now'>\n\n"
+        "Reward:\n<A short, powerful payoff line (max 5 words) explaining the benefit or result viewers get by engaging>\n\n"
+        "Return exactly 3 pairs separated by ---"
     )
 
     try:
         response = client.chat.completions.create(
-            model="mistralai/mistral-7b-instruct",  # You can change model name if needed
+            model="mistralai/mistral-7b-instruct",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.9,
             max_tokens=700
@@ -59,20 +58,6 @@ def generate_hooks(topic: str) -> str:
         return f"❌ Error generating content: {str(e)}"
 
 
-    try:
-        response: ChatCompletion = client.chat.completions.create(
-            model="deepseek/deepseek-r1-0528:free",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.9,
-            max_tokens=700
-        )
 
-        result: str = response.choices[0].message.content.strip()
 
-        if not result or "Hook:" not in result or "Caption:" not in result:
-            return "⚠️ Model returned an invalid response. Try rephrasing your topic."
-
-        return result
-
-    except Exception as e:
-        return f"❌ Error generating content: {str(e)}"
+   
