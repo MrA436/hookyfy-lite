@@ -28,7 +28,7 @@ client: OpenAI = OpenAI(
 
 def generate_hooks(topic: str) -> str:
     """
-    Generate 3 Instagram content pairs with short, scroll-stopping hooks and concise reward payoffs.
+    Generate 3 Instagram content pairs with short, scroll-stopping hooks and punchy payoff rewards.
 
     Args:
         topic (str): Topic to generate content for.
@@ -38,12 +38,12 @@ def generate_hooks(topic: str) -> str:
     """
     prompt = (
         f"You are a viral content strategist. Generate 3 Instagram content pairs on '{topic}'.\n\n"
-        "Each pair must follow this exact format:\n"
+        "Each pair must follow this exact format with clear separation by a blank line:\n\n"
         "Hook:\n<A very short, strong, emotional, scroll-stopping line (max 5 words) that grabs attention immediately>\n\n"
         "Caption:\n<2–3 lines explaining the hook in a relatable way>\n\n"
         "CTA:\n<A clear call to action like 'Save this now'>\n\n"
-        "Reward:\n<A short, powerful payoff line (max 5 words) explaining the benefit or result viewers get by engaging>\n\n"
-        "Return exactly 3 pairs separated by ---"
+        "Reward:\n<The punchline or payoff — the surprising or satisfying answer viewers want after the hook (max 5 words)>\n\n"
+        "Return exactly 3 pairs, each separated by TWO blank lines."
     )
 
     try:
@@ -56,6 +56,7 @@ def generate_hooks(topic: str) -> str:
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"❌ Error generating content: {str(e)}"
+
 
 
 

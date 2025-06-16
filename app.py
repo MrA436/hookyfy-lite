@@ -46,31 +46,30 @@ if st.button("Generate Hooks") and topic:
                 st.stop()
 
             for idx, pair in enumerate(pairs[:3], start=1):
-                lines = pair.splitlines()
+                lines = pair.strip().splitlines()
                 formatted = []
                 has_cta = False
 
                 for line in lines:
                     if "Hook:" in line:
-                        formatted.append(f"**🎯 Hook:** {line.split('Hook:')[-1].strip()}")
+                        formatted.append(f"🎯 Hook: {line.split('Hook:')[-1].strip()}")
                     elif "Caption:" in line:
-                        formatted.append(f"**📝 Caption:** {line.split('Caption:')[-1].strip()}")
+                        formatted.append(f"📝 Caption: {line.split('Caption:')[-1].strip()}")
                     elif "CTA:" in line:
-                        formatted.append(f"**📢 CTA:** {line.split('CTA:')[-1].strip()}")
+                        formatted.append(f"📢 CTA: {line.split('CTA:')[-1].strip()}")
                         has_cta = True
                     elif "Reward:" in line:
-                        formatted.append(f"**🎁 Reward:** {line.split('Reward:')[-1].strip()}")
+                        formatted.append(f"🎁 Reward: {line.split('Reward:')[-1].strip()}")
                     else:
                         formatted.append(line.strip())
 
-                # Add fallback CTA if missing
                 if not has_cta:
-                    formatted.append("**📢 CTA:** 🔁 Save this. Follow for more.")
+                    formatted.append("📢 CTA: 🔁 Save this. Follow for more.")
 
-                display_text = "\n".join(formatted)
+                display_text = "\n\n".join(formatted)
+
                 st.markdown(f"#### 🔹 Pair {idx}")
-                st.markdown(display_text, unsafe_allow_html=True)
-                st.text_area(f"📋 Copy Pair {idx}", display_text, height=300, key=f"copy_{idx}")
+                st.code(display_text, language="markdown")
                 st.markdown("---")
 
         except Exception as e:
