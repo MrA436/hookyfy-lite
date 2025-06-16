@@ -5,13 +5,18 @@ from hook_generator import generate_hooks
 st.set_page_config(page_title="HookyFY Lite", layout="centered")
 
 # Title and description
-st.markdown("<h1 style='text-align: center;'>🚀 HookyFY Lite</h1>", unsafe_allow_html=True)
-st.markdown("### 💡 Write Viral Hooks in 10 Seconds. Powered by AI.")
-st.markdown("**🔥 First 20 users get lifetime access free — DM ‘HOOKY’ to claim.**")
-st.markdown("---")
-st.markdown("👥 Want custom features or faster outputs? DM me on Instagram [@awkenofficial](https://instagram.com/awkenofficial)")
+st.markdown("""
+    <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
+        <h1 style='font-size: 3em; margin-bottom: 0.2em;'>🚀 HookyFY Lite</h1>
+        <h3 style='margin-top: 0;'>💡 Create Viral Hooks in Seconds — Powered by AI.</h3>
+        <p><strong>🔥 First 20 users get lifetime access free — DM ‘HOOKY’ to claim.</strong></p>
+        <hr style='border-top: 1px solid #bbb; width: 60%; margin: 1em auto;'/>
+        <p style='font-size: 0.95em;'>👥 Want custom features or faster outputs?<br>
+        DM me on Instagram <a href='https://www.instagram.com/_awken/' target='_blank' style='text-decoration: none; color: #FF4B4B;'>@_awken</a></p>
+    </div>
+""", unsafe_allow_html=True)
 
-st.markdown("##### Generate 3 viral Instagram hooks + captions instantly")
+st.markdown("#### 🎯 Generate 3 viral Instagram hooks + captions instantly")
 
 # Topic input
 topic = st.text_input("Enter a topic (e.g., Gym motivation, Wealth, Discipline):")
@@ -20,16 +25,25 @@ topic = st.text_input("Enter a topic (e.g., Gym motivation, Wealth, Discipline):
 if st.button("Generate Hooks") and topic:
     with st.spinner("Thinking..."):
         try:
-            result = generate_hooks(topic).strip()
+            result = generate_hooks(topic)
+
+            if result.startswith("❌") or result.startswith("⚠️"):
+                st.warning(result)
+                st.stop()
+
+            if not result or len(result) < 10:
+                st.warning("⚠️ AI returned an empty or incomplete response. Try rephrasing your topic.")
+                st.stop()
 
             st.success("🔥 Here's your content:")
             st.markdown("### 📌 Generated Hooks + Captions")
 
-            # Split by "---" to isolate each hook-caption-cta block
-            pairs = [block.strip() for block in result.split("---") if "Hook:" in block and "Caption:" in block]
+            # Split by "---" and filter valid pairs
+            pairs = [block.strip() for block in result.split("---") if "Hook:" in block and ("Caption:" in block or "CTA:" in block)]
 
             if not pairs:
                 st.warning("⚠️ No valid pairs found. Try again or rephrase your topic.")
+                st.stop()
 
             for idx, pair in enumerate(pairs[:3], start=1):
                 lines = pair.splitlines()
@@ -44,6 +58,8 @@ if st.button("Generate Hooks") and topic:
                     elif "CTA:" in line:
                         formatted.append(f"**📢 CTA:** {line.split('CTA:')[-1].strip()}")
                         has_cta = True
+                    elif "Reward:" in line:
+                        formatted.append(f"**🎁 Reward:** {line.split('Reward:')[-1].strip()}")
                     else:
                         formatted.append(line.strip())
 
