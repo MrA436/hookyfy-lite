@@ -23,13 +23,18 @@ topic = st.text_input("Enter a topic (e.g., Gym motivation, Wealth, Discipline):
 
 # Generate button logic
 if st.button("Generate Hooks") and topic:
-    with st.spinner("Thinking..."):
+    with st.spinner("⚡ Creating viral hooks... please wait."):
         try:
             result = generate_hooks(topic)
 
-            if result.startswith("❌") or result.startswith("⚠️"):
+            if result.startswith("❌"):
                 st.warning(result)
                 st.stop()
+
+            if result.startswith("⚠️"):
+                # Could be incomplete, maybe fallback happened internally but you still got partial content
+                st.warning(result)
+                # You may choose to continue or stop here depending on your UX
 
             if not result or len(result) < 10:
                 st.warning("⚠️ AI returned an empty or incomplete response. Try rephrasing your topic.")
@@ -79,3 +84,4 @@ if st.button("Generate Hooks") and topic:
 # Footer
 st.markdown("---")
 st.markdown("🙌 Liked this tool? Share it with your friends and follow [@_awken](https://www.instagram.com/_awken) for more.")
+
