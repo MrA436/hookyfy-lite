@@ -28,17 +28,21 @@ def call_openrouter(topic, api_key, model):
                 "role": "user",
                 "content": (
                     f"Topic: {topic}\n\n"
-                    "You're a viral Instagram expert. For this topic, give **exactly 3** viral content ideas.\n\n"
+                    "You're an elite Instagram content strategist.\n"
+                    "For this topic, generate 3 viral Instagram post ideas.\n\n"
+
                     "Each idea must include:\n"
-                    "🎯 Hook: Scroll-stopping action or trigger (MAX 7 words).\n"
-                    "🎁 Reward: Tangible result or win (MAX 5 words).\n"
-                    "⚠️ Hook + Reward must be UNDER 10 words total.\n"
-                    "⚠️ Hook must directly lead to the Reward.\n"
-                    "⚠️ No vague words (e.g., 'potential', 'power', 'greatness').\n"
-                    "⚠️ No poetic, fluffy, or rhyming lines.\n\n"
-                    "📝 Caption: Keep it short, punchy, and relatable (Instagram tone).\n"
-                    "📢 CTA: One strong call to action (Save / Comment / Share).\n\n"
-                    "👉 Output Format (repeat 3 times, use --- to separate):\n"
+                    "🎯 Hook: Scroll-stopping. Max 7 words.\n"
+                    "🎁 Reward: Tangible result of the hook. Max 5 words.\n"
+                    "⚠️ Hook + Reward combined: Under 10 words total.\n"
+                    "⚠️ Must feel like cause → effect.\n"
+                    "⚠️ NO vague, poetic, or generic lines.\n"
+                    "⚠️ Must be sharp, bold, and practical.\n\n"
+
+                    "📝 Caption: Short, real, and emotional. Sounds like a person, not a brand.\n"
+                    "📢 CTA: Save / Share / Comment — strong, natural.\n\n"
+
+                    "Output format:\n"
                     "🎯 Hook: ...\n"
                     "🎁 Reward: ...\n"
                     "📝 Caption: ...\n"
@@ -48,7 +52,7 @@ def call_openrouter(topic, api_key, model):
             }
         ],
         "temperature": 0.7,
-        "max_tokens": 700
+        "max_tokens": 800
     }
 
 
