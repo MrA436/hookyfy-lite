@@ -52,15 +52,25 @@ def call_openrouter(topic, api_key, model):
             }
         ],
         "temperature": 0.7,
-        "max_tokens": 800
+        "max_tokens": 1000
     }
 
 
 
     response = requests.post(ENDPOINT, headers=headers, json=data, timeout=15)
     response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"].strip()
 
+    result = response.json()["choices"][0]["message"]["content"].strip()
+
+    # ✅ Better cutoff detection logic
+    ideas = [x for x in result.split("---") if "🎯 Hook:" in x and "🎁 Reward:" in x]
+
+    is_incomplete = len(ideas) < 3  # 👈 Flag to tell if output is incomplete
+
+    return result, is_incomplete
+
+
+        
 
 def generate_hooks(topic):
     apis = [
@@ -71,17 +81,19 @@ def generate_hooks(topic):
     for api_call in apis:
         for attempt in range(2):
             try:
-                result = api_call(topic)
+                result, is_incomplete = api_call(topic)
                 if result and len(result.strip()) > 10:
-                    return result
+                    return result, is_incomplete
             except Exception as e:
                 print(f"API call failed on attempt {attempt + 1} for {api_call.__name__}: {e}")
             time.sleep(1)
 
     return (
         "⚠️ HookyFY Lite is currently under heavy load.\n\n"
-        "Please try again shortly — your viral hooks are worth the wait. 💡"
+        "Please try again shortly — your viral hooks are worth the wait. 💡",
+        False
     )
+
 
 
 

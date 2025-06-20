@@ -21,65 +21,82 @@ st.markdown("#### 🎯 Generate 3 viral Instagram hooks + captions instantly")
 # Topic input
 topic = st.text_input("Enter a topic (e.g., Gym motivation, Wealth, Discipline):")
 
+# ⬇️ Beginner-friendly explanation added here
+with st.expander("What do Hook, Reward, Caption & CTA mean?"):
+    st.markdown("""
+    - **Hook:** The attention-grabbing line that stops the scroll.  
+    - **Reward:** The payoff or benefit viewers get if they keep watching.  
+    - **Caption:** The description or story that supports the hook and value.  
+    - **CTA:** What you want viewers to do next (comment, share, save, etc.).  
+    """)
+
 # Generate button logic
 if st.button("Generate Hooks") and topic:
-    with st.spinner("⚡ Creating viral hooks... please wait."):
-        try:
-            result = generate_hooks(topic)
 
-            if result.startswith("❌"):
-                st.warning(result)
-                st.stop()
+    def display_hooks():
+        with st.spinner("⚡ Creating viral hooks... please wait."):
+            try:
+                result, is_incomplete = generate_hooks(topic)
+                
+                if result.startswith("❌"):
+                    st.warning(result)
+                    return  # stops spinner
 
-            if result.startswith("⚠️"):
-                # Could be incomplete, maybe fallback happened internally but you still got partial content
-                st.warning(result)
-                # You may choose to continue or stop here depending on your UX
+                if result.startswith("⚠️"):
+                    st.warning(result)
+                    return  # stops spinner
 
-            if not result or len(result) < 10:
-                st.warning("⚠️ AI returned an empty or incomplete response. Try rephrasing your topic.")
-                st.stop()
+                if not result or len(result) < 10:
+                    st.warning("⚠️ AI returned an empty or incomplete response. Try rephrasing your topic.")
+                    return
 
-            st.success("🔥 Here's your content:")
-            st.markdown("### 📌 Generated Hooks + Captions")
+                # <-- Add this here -->
+                if is_incomplete:
+                    st.info("⚠️ Some ideas may be missing. We're working on it! Please try again soon. Thanks for your patience.")
 
-            # Split by "---" and filter valid pairs
-            pairs = [block.strip() for block in result.split("---") if "Hook:" in block and ("Caption:" in block or "CTA:" in block)]
+                st.success("🔥 Here's your content:")
+                st.markdown("### 📌 Generated Hooks + Captions")
 
-            if not pairs:
-                st.warning("⚠️ No valid pairs found. Try again or rephrase your topic.")
-                st.stop()
+                pairs = [block.strip() for block in result.split("---") if "Hook:" in block and ("Caption:" in block or "CTA:" in block)]
 
-            for idx, pair in enumerate(pairs[:3], start=1):
-                lines = pair.strip().splitlines()
-                formatted = []
-                has_cta = False
+                if not pairs:
+                    st.warning("⚠️ No valid pairs found. Try again or rephrase your topic.")
+                    return
 
-                for line in lines:
-                    if "Hook:" in line:
-                        formatted.append(f"🎯 Hook: {line.split('Hook:')[-1].strip()}")
-                    elif "Caption:" in line:
-                        formatted.append(f"📝 Caption: {line.split('Caption:')[-1].strip()}")
-                    elif "CTA:" in line:
-                        formatted.append(f"📢 CTA: {line.split('CTA:')[-1].strip()}")
-                        has_cta = True
-                    elif "Reward:" in line:
-                        formatted.append(f"🎁 Reward: {line.split('Reward:')[-1].strip()}")
-                    else:
-                        formatted.append(line.strip())
+                for idx, pair in enumerate(pairs[:3], start=1):
+                    lines = pair.strip().splitlines()
+                    formatted = []
+                    has_cta = False
 
-                if not has_cta:
-                    formatted.append("📢 CTA: 🔁 Save this. Follow for more.")
+                    for line in lines:
+                        if "Hook:" in line:
+                            formatted.append(f"🎯 Hook: {line.split('Hook:')[-1].strip()}")
+                        elif "Caption:" in line:
+                            formatted.append(f"📝 Caption: {line.split('Caption:')[-1].strip()}")
+                        elif "CTA:" in line:
+                            formatted.append(f"📢 CTA: {line.split('CTA:')[-1].strip()}")
+                            has_cta = True
+                        elif "Reward:" in line:
+                            formatted.append(f"🎁 Reward: {line.split('Reward:')[-1].strip()}")
+                        else:
+                            formatted.append(line.strip())
 
-                display_text = "\n\n".join(formatted)
+                    if not has_cta:
+                        formatted.append("📢 CTA: 🔁 Save this. Follow for more.")
 
-                st.markdown(f"#### 🔹 Pair {idx}")
-                st.code(display_text, language="markdown")
-                st.markdown("---")
+                    display_text = "\n\n".join(formatted)
+                    st.markdown(f"#### 🔹 Pair {idx}")
+                    st.code(display_text, language="markdown")
+                    st.markdown("---")
 
-        except Exception as e:
-            st.error("Something went wrong. Please check your API key or retry.")
-            st.text(str(e))
+            except Exception as e:
+                st.error("Something went wrong. We're optimizing the app experience — please try again shortly.")
+                st.text(str(e))
+                return  # also ensures spinner stops on exception
+
+    display_hooks()
+
+
 
 # Footer
 st.markdown("---")
