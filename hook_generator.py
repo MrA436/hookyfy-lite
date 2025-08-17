@@ -2,13 +2,21 @@ import os
 import time
 import requests
 from dotenv import load_dotenv
+
 load_dotenv()
 
+# ---------- Secrets ----------
+def get_secret(key_name, fallback=""):
+    value = os.getenv(key_name, fallback)
+    if not value:
+        print(f"⚠️ Warning: {key_name} not found in environment.")
+    return value
 
-# Get keys
-DEESEEK_API_KEY = os.getenv("OPENAI_API_KEY_2")  # DeepSeek via OpenRouter
-MISTRAL_API_KEY = os.getenv("OPENAI_API_KEY")    # Mistral via OpenRouter
+# ✅ Load API keys safely
+DEESEEK_API_KEY = get_secret("OPENAI_API_KEY_2")  # DeepSeek via OpenRouter
+MISTRAL_API_KEY = get_secret("OPENAI_API_KEY")    # Mistral via OpenRouter
 
+# ---------- Config ----------
 ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 
 HEADERS_TEMPLATE = {
@@ -17,6 +25,8 @@ HEADERS_TEMPLATE = {
     "X-Title": "HookyFY Lite"
 }
 
+
+# ---------- Core Function ----------
 def call_openrouter(topic, api_key, model):
     headers = HEADERS_TEMPLATE.copy()
     headers["Authorization"] = f"Bearer {api_key}"
@@ -28,21 +38,27 @@ def call_openrouter(topic, api_key, model):
                 "role": "user",
                 "content": (
                     f"Topic: {topic}\n\n"
-                    "You're an elite Instagram content strategist.\n"
-                    "For this topic, generate 3 viral Instagram post ideas.\n\n"
+                    "You are an elite Instagram content strategist for luxury, wealth, and high-performance niches.\n"
+                    "Generate 3 viral post frameworks that feel like a top creator saying 'I’m not here to compete, I’m here to dominate.'\n\n"
 
-                    "Each idea must include:\n"
-                    "🎯 Hook: Scroll-stopping. Max 7 words.\n"
-                    "🎁 Reward: Tangible result of the hook. Max 5 words.\n"
-                    "⚠️ Hook + Reward combined: Under 10 words total.\n"
-                    "⚠️ Must feel like cause → effect.\n"
-                    "⚠️ NO vague, poetic, or generic lines.\n"
-                    "⚠️ Must be sharp, bold, and practical.\n\n"
+                    "🔥 HOOK + REWARD RULES:\n"
+                    "🎯 Hook: Bold, commanding, scroll-stopping. Max 7 words. Can be declarative or a proclamation of dominance.\n"
+                    "🎁 Reward: Tangible outcome or power statement. Max 5 words. Reinforces dominance and status.\n"
+                    "⚡ Hook + Reward combined under 10 words.\n"
+                    "⚡ Avoid vague/soft language: no 'maybe', 'try', 'sometimes'.\n"
+                    "✅ Use swagger, authority, elite mindset, and cinematic language.\n\n"
 
-                    "📝 Caption: Short, real, and emotional. Sounds like a person, not a brand.\n"
-                    "📢 CTA: Save / Share / Comment — strong, natural.\n\n"
+                    "📝 Caption RULES:\n"
+                    "- 2–3 short, punchy sentences.\n"
+                    "- Tone: Dominant, commanding, swagger-filled. No fluff.\n"
+                    "- Emphasize status, power, execution, or market dominance.\n"
+                    "- Use power verbs (obliterate, dominate, command, annihilate, redefine) and cinematic flair.\n\n"
 
-                    "Output format:\n"
+                    "📢 CTA RULES:\n"
+                    "- Must be commanding: 'Save this now', 'Share with your team', 'Comment X to claim'.\n"
+                    "- Avoid weak or optional phrasing.\n\n"
+
+                    "⚠️ OUTPUT FORMAT (strict):\n"
                     "🎯 Hook: ...\n"
                     "🎁 Reward: ...\n"
                     "📝 Caption: ...\n"
@@ -60,32 +76,40 @@ def call_openrouter(topic, api_key, model):
     response = requests.post(ENDPOINT, headers=headers, json=data, timeout=15)
     response.raise_for_status()
 
-    result = response.json()["choices"][0]["message"]["content"].strip()
+    json_resp = response.json()
+    # ✅ Some models return "message", some "messages"
+    if "choices" in json_resp and json_resp["choices"]:
+        result = (
+            json_resp["choices"][0]
+            .get("message", json_resp["choices"][0].get("messages", {}))
+            .get("content", "")
+            .strip()
+        )
+    else:
+        raise ValueError("⚠️ Unexpected API response format")
 
-    # ✅ Better cutoff detection logic
+    # ✅ Cutoff-safe idea parsing
     ideas = [x for x in result.split("---") if "🎯 Hook:" in x and "🎁 Reward:" in x]
-
-    is_incomplete = len(ideas) < 3  # 👈 Flag to tell if output is incomplete
+    is_incomplete = len(ideas) < 3
 
     return result, is_incomplete
 
 
-        
-
+# ---------- Multi-Model Retry ----------
 def generate_hooks(topic):
     apis = [
-        lambda topic: call_openrouter(topic, DEESEEK_API_KEY, "deepseek/deepseek-r1-0528:free"),
-        lambda topic: call_openrouter(topic, MISTRAL_API_KEY, "mistralai/mistral-7b-instruct:free")
+        ("DeepSeek", lambda t: call_openrouter(t, DEESEEK_API_KEY, "deepseek/deepseek-r1-0528:free")),
+        ("Mistral",  lambda t: call_openrouter(t, MISTRAL_API_KEY, "mistralai/mistral-7b-instruct:free"))
     ]
 
-    for api_call in apis:
+    for name, api_call in apis:
         for attempt in range(2):
             try:
                 result, is_incomplete = api_call(topic)
                 if result and len(result.strip()) > 10:
                     return result, is_incomplete
             except Exception as e:
-                print(f"API call failed on attempt {attempt + 1} for {api_call.__name__}: {e}")
+                print(f"❌ {name} failed on attempt {attempt + 1}: {e}")
             time.sleep(1)
 
     return (
@@ -95,7 +119,6 @@ def generate_hooks(topic):
     )
 
 
-
-
-print("Mistral Key starts with:", MISTRAL_API_KEY[:10])
-print("DeepSeek Key starts with:", DEESEEK_API_KEY[:10])
+# ---------- Debug ----------
+print("Mistral Key starts with:", (MISTRAL_API_KEY or "❌None")[:10])
+print("DeepSeek Key starts with:", (DEESEEK_API_KEY or "❌None")[:10])

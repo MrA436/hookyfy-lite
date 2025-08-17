@@ -2,12 +2,12 @@ import streamlit as st
 from hook_generator import generate_hooks
 
 # Page config
-st.set_page_config(page_title="HookyFY Lite", layout="centered")
+st.set_page_config(page_title="HookyFY", layout="centered")
 
 # Title and description
 st.markdown("""
     <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
-        <h1 style='font-size: 3em; margin-bottom: 0.2em;'>🚀 HookyFY Lite</h1>
+        <h1 style='font-size: 3em; margin-bottom: 0.2em;'>🚀 HookyFY lite</h1>
         <h3 style='margin-top: 0;'>💡 Create Viral Hooks in Seconds — Powered by AI.</h3>
         <p><strong>🔥 First 20 users get lifetime access free — DM ‘HOOKY’ to claim.</strong></p>
         <hr style='border-top: 1px solid #bbb; width: 60%; margin: 1em auto;'/>
