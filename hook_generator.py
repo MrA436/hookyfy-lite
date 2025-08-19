@@ -38,38 +38,42 @@ def call_openrouter(topic, api_key, model):
                 "role": "user",
                 "content": (
                     f"Topic: {topic}\n\n"
-                    "You are an elite Instagram content strategist for luxury, wealth, and high-performance niches.\n"
-                    "Generate 3 viral post frameworks that feel like a top creator saying 'I’m not here to compete, I’m here to dominate.'\n\n"
+                    "Generate **exactly 3 viral Instagram post frameworks** in this style:\n"
+                    "\"I’m not here to compete; I’m here to dominate.\"\n\n"
 
-                    "🔥 HOOK + REWARD RULES:\n"
-                    "🎯 Hook: Bold, commanding, scroll-stopping. Max 7 words. Can be declarative or a proclamation of dominance.\n"
-                    "🎁 Reward: Tangible outcome or power statement. Max 5 words. Reinforces dominance and status.\n"
-                    "⚡ Hook + Reward combined under 10 words.\n"
-                    "⚡ Avoid vague/soft language: no 'maybe', 'try', 'sometimes'.\n"
-                    "✅ Use swagger, authority, elite mindset, and cinematic language.\n\n"
+                    "🔥 HOOK RULES:\n"
+                    "- Provocative, thought-provoking question or statement (5–12 words).\n"
+                    "- Dramatic, reflective, slightly rebellious.\n"
+                    "- Examples: 'Why were you born into mediocrity?', 'What if your fear is the final obstacle?'\n\n"
 
-                    "📝 Caption RULES:\n"
-                    "- 2–3 short, punchy sentences.\n"
-                    "- Tone: Dominant, commanding, swagger-filled. No fluff.\n"
-                    "- Emphasize status, power, execution, or market dominance.\n"
-                    "- Use power verbs (obliterate, dominate, command, annihilate, redefine) and cinematic flair.\n\n"
+                    "💡 CONCLUSION RULES:\n"
+                    "- 3–8 words, mindset-shifting answer.\n"
+                    "- Emotionally magnetic, aspirational, or surprising.\n"
+                    "- Examples: 'To rewrite your destiny.', 'Own your legacy.'\n\n"
+
+                    "📝 CAPTION RULES:\n"
+                    "- 2–3 short sentences, cinematic, first-person.\n"
+                    "- Expand on hook + conclusion.\n"
+                    "- Use power verbs: dominate, annihilate, conquer, ignite, redefine.\n\n"
 
                     "📢 CTA RULES:\n"
-                    "- Must be commanding: 'Save this now', 'Share with your team', 'Comment X to claim'.\n"
-                    "- Avoid weak or optional phrasing.\n\n"
+                    "- Short, commanding, actionable.\n"
+                    "- Examples: 'Comment X if this hits', 'Save this to own your day', 'Share to inspire.'\n\n"
 
-                    "⚠️ OUTPUT FORMAT (strict):\n"
-                    "🎯 Hook: ...\n"
-                    "🎁 Reward: ...\n"
-                    "📝 Caption: ...\n"
-                    "📢 CTA: ...\n"
+                    "⚠️ OUTPUT FORMAT (strict, numbered):\n"
+                    "Framework 1:\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "Framework 2:\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "Framework 3:\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
                     "---"
                 )
             }
         ],
-        "temperature": 0.7,
-        "max_tokens": 1000
+        "temperature": 0.75,
+        "max_tokens": 2500
     }
+
+
+
 
 
 
