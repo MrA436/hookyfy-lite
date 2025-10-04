@@ -1,8 +1,8 @@
 import os
 import time
 import requests
-from dotenv import load_dotenv
 import random
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 
 HEADERS_TEMPLATE = {
     "Content-Type": "application/json",
-    "Referer": "https://hookyfy-lite.streamlit.app/", 
+    "HTTP-Referer": "https://hookyfy-lite.streamlit.app/",  # Playground always sets this
     "X-Title": "HookyFY Lite"
 }
 
@@ -52,43 +52,54 @@ def call_openrouter(topic, api_key, model):
             }
         ],
         "temperature": 0.75,
-        "max_tokens": 2500
+        "max_tokens": 2500,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
     }
 
     for attempt in range(3):
         try:
-            response = requests.post(ENDPOINT, headers=headers, json=data, timeout=15)
-            if response.status_code == 429:
-                wait = (2 ** attempt) + random.uniform(0, 1)
-                print(f"⚠️ Rate limited. Waiting {wait:.1f}s before retry...")
-                time.sleep(wait)
-                continue  # retry
-            response.raise_for_status()
+            response = requests.post(ENDPOINT, headers=headers, json=data, timeout=20)
 
+            # --- Handle rate limiting ---
+            if response.status_code == 429:
+                txt = response.text
+                if "temporarily rate-limited upstream" in txt:
+                    print("⚠️ One source is overloaded. Switching...")
+                    return None, False  # skip this model immediately
+                wait = (2 ** attempt) + random.uniform(0, 1)
+                print(f"⚠️ Too many requests. Retrying in {wait:.1f}s...")
+                time.sleep(wait)
+                continue
+
+            response.raise_for_status()
             json_resp = response.json()
+
             result = json_resp["choices"][0]["message"]["content"].strip()
 
-            # Cutoff-safe idea parsing (adjusted for your emoji-less format)
+            # Extract ideas safely
             ideas = [x for x in result.split("---") if "Hook:" in x and "Caption:" in x]
             is_incomplete = len(ideas) < 3
 
             return result, is_incomplete
 
         except requests.exceptions.RequestException as e:
-            print(f"❌ Attempt {attempt + 1} failed: {e}")
+            print(f"❌ Network hiccup. Retry {attempt + 1}: {e}")
             time.sleep(1)
 
-    return "⚠️ HookyFY Lite is currently under heavy load.\nPlease try again shortly.", False
+    return None, False
+
 
 # ---------- Multi-Model Retry ----------
 def generate_hooks(topic):
     apis = []
     if DEESEEK_API_KEY:
-        apis.append(("DeepSeek", lambda t: call_openrouter(t, DEESEEK_API_KEY, "deepseek/deepseek-r1-0528:free")))
+        apis.append(lambda t: call_openrouter(t, DEESEEK_API_KEY, "deepseek/deepseek-r1-0528:free"))
     if MISTRAL_API_KEY:
-        apis.append(("Mistral", lambda t: call_openrouter(t, MISTRAL_API_KEY, "mistralai/mistral-7b-instruct:free")))
+        apis.append(lambda t: call_openrouter(t, MISTRAL_API_KEY, "mistralai/mistral-7b-instruct:free"))
 
-    for name, api_call in apis:
+    for api_call in apis:
         result, is_incomplete = api_call(topic)
         if result and len(result.strip()) > 10:
             return result, is_incomplete
@@ -98,6 +109,8 @@ def generate_hooks(topic):
         False
     )
 
+
 # ---------- Debug ----------
-print("Mistral Key starts with:", (MISTRAL_API_KEY or "❌None")[:10])
-print("DeepSeek Key starts with:", (DEESEEK_API_KEY or "❌None")[:10])
+print("🔍 Keys loaded:",
+      "Primary ✅" if MISTRAL_API_KEY else "Primary ❌",
+      "| Secondary ✅" if DEESEEK_API_KEY else "| Secondary ❌")
