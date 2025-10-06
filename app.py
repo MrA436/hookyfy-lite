@@ -105,7 +105,6 @@ with st.expander("What do Hook, Reward, Caption & CTA mean?"):
     - **Caption:** The description or story that supports the hook and value.  
     - **CTA:** What you want viewers to do next (comment, share, save, etc.).  
     """)
-
 # ======================== HOOK GENERATION ========================
 if st.button("Generate Hooks") and topic:
 
@@ -175,7 +174,7 @@ st.markdown(
     """
     <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
         <h4 style='font-weight: 500; color: #aaa;'>🚀 Be the first to try the full HookyFY experience</h4>
-        <a href='https://your-waitlist-link.com' target='_blank'>
+        <a href='https://rb.gy/t7sx4b' target='_blank'>
             <button class="generate-btn">
                 🔔 Join Waitlist
             </button>
