@@ -4,15 +4,91 @@ from hook_generator import generate_hooks
 # Page config
 st.set_page_config(page_title="HookyFY", layout="centered")
 
-# Title and description
+# ======================== CUSTOM THEME ========================
+st.markdown(
+    """
+    <style>
+    /* Background gradient */
+    body {
+        background: linear-gradient(135deg, #0a0014 0%, #0f0f18 40%, #000000 100%);
+        color: white;
+    }
+
+    /* App container */
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, #0a0014 0%, #0f0f18 40%, #000000 100%);
+        color: white;
+    }
+
+    [data-testid="stHeader"] {
+        background: rgba(0,0,0,0);
+    }
+    [data-testid="stToolbar"] {
+        visibility: hidden;
+    }
+
+    /* Text input */
+    input[type="text"] {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: white;
+        border: 1px solid #7b2ff7;
+        border-radius: 6px;
+    }
+
+    /* Buttons */
+    div.stButton > button:first-child {
+        background: linear-gradient(135deg, #7b2ff7 30%, #000000 100%);
+        color: white;
+        border: none;
+        padding: 0.6em 1.2em;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 12px rgba(123, 47, 247, 0.3);
+    }
+    div.stButton > button:first-child:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(123, 47, 247, 0.6);
+    }
+
+    /* Expander style */
+    details {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(123,47,247,0.3);
+        border-radius: 8px;
+        padding: 0.5em;
+        color: white;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5 {
+        color: #e3d5ff;
+        text-shadow: 0 0 10px rgba(123, 47, 247, 0.3);
+    }
+
+    /* Divider line */
+    hr {
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Code box (results) */
+    pre, code {
+        background: rgba(255,255,255,0.07) !important;
+        color: #e6e6e6 !important;
+        border-radius: 8px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ======================== MAIN UI ========================
 st.markdown("""
     <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
-        <h1 style='font-size: 3em; margin-bottom: 0.2em;'>🚀 HookyFY lite</h1>
+        <h1 style='font-size: 3em; margin-bottom: 0.2em;'>🚀 HookyFY Lite</h1>
         <h3 style='margin-top: 0;'>💡 Create Viral Hooks in Seconds — Powered by AI.</h3>
-        <p><strong>🔥 First 20 users get lifetime access free — DM ‘HOOKY’ to claim.</strong></p>
         <hr style='border-top: 1px solid #bbb; width: 60%; margin: 1em auto;'/>
-        <p style='font-size: 0.95em;'>👥 Want custom features or faster outputs?<br>
-        DM me on Instagram <a href='https://www.instagram.com/_awken/' target='_blank' style='text-decoration: none; color: #FF4B4B;'>@_awken</a></p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -21,7 +97,7 @@ st.markdown("#### 🎯 Generate 3 viral Instagram hooks + captions instantly")
 # Topic input
 topic = st.text_input("Enter a topic (e.g., Gym motivation, Wealth, Discipline):")
 
-# ⬇️ Beginner-friendly explanation added here
+# Explanation expander
 with st.expander("What do Hook, Reward, Caption & CTA mean?"):
     st.markdown("""
     - **Hook:** The attention-grabbing line that stops the scroll.  
@@ -30,7 +106,7 @@ with st.expander("What do Hook, Reward, Caption & CTA mean?"):
     - **CTA:** What you want viewers to do next (comment, share, save, etc.).  
     """)
 
-# Generate button logic
+# ======================== HOOK GENERATION ========================
 if st.button("Generate Hooks") and topic:
 
     def display_hooks():
@@ -38,27 +114,21 @@ if st.button("Generate Hooks") and topic:
             try:
                 result, is_incomplete = generate_hooks(topic)
                 
-                if result.startswith("❌"):
+                if result.startswith("❌") or result.startswith("⚠️"):
                     st.warning(result)
-                    return  # stops spinner
-
-                if result.startswith("⚠️"):
-                    st.warning(result)
-                    return  # stops spinner
+                    return
 
                 if not result or len(result) < 10:
                     st.warning("⚠️ AI returned an empty or incomplete response. Try rephrasing your topic.")
                     return
 
-                # <-- Add this here -->
                 if is_incomplete:
-                    st.info("⚠️ Some ideas may be missing. We're working on it! Please try again soon. Thanks for your patience.")
+                    st.info("⚠️ Some ideas may be missing. We're working on it! Please try again soon.")
 
                 st.success("🔥 Here's your content:")
                 st.markdown("### 📌 Generated Hooks + Captions")
 
                 pairs = [block.strip() for block in result.split("---") if "Hook:" in block and ("Caption:" in block or "CTA:" in block)]
-
                 if not pairs:
                     st.warning("⚠️ No valid pairs found. Try again or rephrase your topic.")
                     return
@@ -90,15 +160,46 @@ if st.button("Generate Hooks") and topic:
                     st.markdown("---")
 
             except Exception as e:
-                st.error("Something went wrong. We're optimizing the app experience — please try again shortly.")
+                st.error("Something went wrong. Please try again shortly.")
                 st.text(str(e))
-                return  # also ensures spinner stops on exception
 
     display_hooks()
 
-
-
-# Footer
+# ======================== FOOTER ========================
 st.markdown("---")
-st.markdown("🙌 Liked this tool? Share it with your friends and follow [@_awken](https://www.instagram.com/_awken) for more.")
+st.markdown("<div style='text-align: center; color: #bbb;'>🙌 Liked this tool? Share it with your friends</div>", unsafe_allow_html=True)
+
+# Waitlist button
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
+        <h4 style='font-weight: 500; color: #aaa;'>🚀 Be the first to try the full HookyFY experience</h4>
+        <a href='https://your-waitlist-link.com' target='_blank'>
+            <button class="generate-btn">
+                🔔 Join Waitlist
+            </button>
+        </a>
+    </div>
+
+    <style>
+    .generate-btn {
+        background: linear-gradient(135deg, #7b2ff7 30%, #000000 100%);
+        color: white;
+        border: none;
+        padding: 0.6em 1.2em;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 12px rgba(123, 47, 247, 0.3);
+    }
+    .generate-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(123, 47, 247, 0.6);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
