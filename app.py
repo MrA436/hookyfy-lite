@@ -174,7 +174,7 @@ st.markdown(
     """
     <div style='text-align: center; font-family: "Segoe UI", sans-serif;'>
         <h4 style='font-weight: 500; color: #aaa;'>🚀 Be the first to try the full HookyFY experience</h4>
-        <a href='https://rb.gy/t7sx4b' target='_blank'>
+        <a href='https://forms.gle/861FsezQHnHFVSLF7' target='_blank'>
             <button class="generate-btn">
                 🔔 Join Waitlist
             </button>

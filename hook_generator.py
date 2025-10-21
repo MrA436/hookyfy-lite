@@ -31,40 +31,54 @@ def call_openrouter(topic, api_key, model):
                 "role": "user",
                 "content": (
                     f"Topic: {topic}\n\n"
-                    "Generate exactly 3 viral Instagram post frameworks that hit **raw, high-stakes emotion**:\n\n"
+                    "Generate **exactly 3 viral Instagram post frameworks** that feel cinematic, primal, and emotionally high-stakes.\n"
+                    "Each framework must make the reader *feel punched in the chest*, not just impressed.\n\n"
+                    
                     "🔥 HOOK RULES (STRICT):\n"
-                    "- Must grab attention instantly; trigger strong emotions: fear, envy, guilt, pride, shock, FOMO, anger, joy.\n"
-                    "- 5–8 words only.\n"
-                    "- Use simple, everyday language anyone scrolling can understand.\n"
-                    "- Hooks must present **conflict, tension, or high stakes**.\n"
-                    "- Hooks must make the user **stop scrolling immediately and feel something personal**.\n\n"
+                    "- 5–8 words ONLY.\n"
+                    "- Must create instant emotional impact — make the reader FEEL fear, envy, guilt, power, pride, regret, or awe.\n"
+                    "- Must sound like something a human would scream, confess, or whisper at rock-bottom or peak victory.\n"
+                    "- Hooks must imply a story, conflict, or transformation.\n"
+                    "- Avoid generic words (success, mindset, goals, dreams). Use visceral language that stings or inspires.\n"
+                    "- No emojis. No hashtags.\n\n"
+                    
                     "💡 CONCLUSION RULES (STRICT):\n"
                     "- 3–5 words.\n"
-                    "- Must resolve the tension emotionally, or twist it to shock or inspire.\n\n"
+                    "- Must emotionally resolve or reverse the hook — either redemption, dominance, or awakening.\n"
+                    "- Should feel like the climax of a movie scene.\n\n"
+                    
                     "📝 CAPTION RULES (STRICT):\n"
-                    "- 2–3 short sentences, first-person storytelling.\n"
-                    "- Must **embed a natural CTA at the end** ('like', 'save', 'share').\n"
-                    "- NO separate CTA field under any circumstance.\n"
-                    "- Language must feel raw, urgent, relatable, and real.\n"
-                    "- Example correct framework:\n"
-                    "Hook: I watched my dreams burn\n"
-                    "Conclusion: Then I rebuilt\n"
-                    "Caption: Everything I worked for went up in smoke, but I refused to quit. Save this if you’re not giving up.\n\n"
-                    "⚠️ OUTPUT FORMAT (STRICT, numbered, all hooks & captions must feel intense and real):\n"
-                    "Framework 1:\nHook: ...\nConclusion: ...\nCaption: ...\n"
-                    "Framework 2:\nHook: ...\nConclusion: ...\nCaption: ...\n"
-                    "Framework 3:\nHook: ...\nConclusion: ...\nCaption: ...\n"
+                    "- 2–3 short sentences.\n"
+                    "- First-person tone: sound real, confessional, and raw.\n"
+                    "- Must include a **natural CTA** at the end (like, save, share, comment) — no separate CTA field.\n"
+                    "- Use storytelling and contrast: downfall → lesson → power.\n"
+                    "- No motivational quotes or clichés.\n"
+                    "- Write like you’re talking to one person who’s struggling silently.\n\n"
+                    
+                    "✅ EXAMPLE OUTPUT (Correct Style):\n"
+                    "Hook: I lost everything chasing validation\n"
+                    "Conclusion: But found myself instead\n"
+                    "Caption: I kept posting for approval until I forgot who I was. Don’t make my mistake — save this for when you need to remember your worth.\n\n"
+                    
+                    "⚠️ OUTPUT FORMAT (STRICT):\n"
+                    "Framework 1:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
+                    "Framework 2:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
+                    "Framework 3:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
                     "---\n"
-                    "**Important:** Only 3 fields per framework. Hooks must feel raw, high-stakes, and emotionally gripping. Captions must tell a story, be relatable, and **include CTA naturally at the end**. Do NOT add extra lines, separate CTA fields, or vague/soft hooks."
+                    "**Important:**\n"
+                    "- Every hook must hit like a confession or a declaration of war.\n"
+                    "- Every caption must sound human, vulnerable, or victorious.\n"
+                    "- Do NOT add extra notes, hashtags, emojis, or empty motivation."
                 )
             }
         ],
-        "temperature": 0.95,
+        "temperature": 1.0,
         "max_tokens": 2500,
         "top_p": 1,
-        "frequency_penalty": 0,
-        "presence_penalty": 0
+        "frequency_penalty": 0.2,
+        "presence_penalty": 0.3
     }
+
 
 
 
