@@ -124,9 +124,9 @@ def call_openrouter(topic, api_key, model):
 def generate_hooks(topic):
     apis = []
     if DEESEEK_API_KEY:
-        apis.append(lambda t: call_openrouter(t, DEESEEK_API_KEY, "deepseek/deepseek-r1-0528:free"))
+        apis.append(lambda t: call_openrouter(t, DEESEEK_API_KEY, "deepseek/deepseek-chat-v3.1:free"))
     if MISTRAL_API_KEY:
-        apis.append(lambda t: call_openrouter(t, MISTRAL_API_KEY, "mistralai/mistral-7b-instruct:free"))
+        apis.append(lambda t: call_openrouter(t, MISTRAL_API_KEY, "mistralai/devstral-small-2505:free"))
 
     for api_call in apis:
         result, is_incomplete = api_call(topic)
