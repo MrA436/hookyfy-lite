@@ -31,71 +31,47 @@ def call_openrouter(topic, api_key, model):
             "role": "user",
             "content": (
                 f"Topic: {topic}\n\n"
-                "Write **exactly 3 viral Instagram post frameworks** that sound like they were written in the aftermath of a breakdown or a breakthrough — raw, visual, and unfiltered.\n"
-                "Think: a voice message sent at 3AM that turned into poetry.\n"
-                "Every line should sting, seduce, or scar. No motivational tone. No advice. Just cinematic confession and emotional dominance.\n\n"
+                "Generate **exactly 3 unique viral Instagram post frameworks** about this topic.\n"
+                "Each must feel raw, emotional, and mirror the viewer’s own experiences — like you’re talking directly to their hidden pain or pride.\n\n"
 
-                "🔥 HOOK RULES (STRICT):\n"
-                "- 5–8 words ONLY.\n"
-                "- Write like it’s a sin being confessed or a victory being whispered through clenched teeth.\n"
-                "- Hooks must evoke **visceral emotion** — regret, lust, revenge, guilt, power, emptiness, or rebirth.\n"
-                "- Use physical or visual imagery (blood, silence, mirror, ashes, breath, scars, hunger, fire, eyes, hands, etc.).\n"
-                "- Every hook should sound like a *scene* not a *quote*.\n"
-                "- Example tone: “I watched myself beg for love.” or “She made me her ghost.”\n"
-                "- Ban the following words: success, goals, motivation, mindset, hustle, dream, growth, journey.\n"
-                "- No emojis. No hashtags. No fake inspiration.\n\n"
+                "🔥 HOOK RULES:\n"
+                "- Must directly relate to the topic — use its meaning or emotion, not just its word.\n"
+                "- 5–9 words.\n"
+                "- Different tone for each: 1) angry/defiant, 2) sad/regretful, 3) empowering/shocking.\n"
+                "- Avoid repeating structure or rhythm from previous hooks.\n"
+                "- Must make the viewer feel personally attacked, understood, or exposed.\n\n"
 
-                "💡 CONCLUSION RULES (STRICT):\n"
-                "- 3–5 words ONLY.\n"
-                "- Must hit like a closing scene or emotional reversal — from chaos to control, from pain to peace, from victim to villain.\n"
-                "- Example tones: brutal acceptance, cold peace, power reclaimed, ego reborn.\n"
-                "- Examples: “Now I don’t chase.” / “Silence tastes better.” / “She taught me rage.”\n\n"
+                "💥 CONCLUSION RULES:\n"
+                "- 3–6 words that emotionally flip the hook.\n"
+                "- Must *complete* the emotional arc — if the hook is pain, make the conclusion power or peace.\n"
+                "- Avoid generic words like 'success', 'goals', 'life'.\n\n"
 
-                "📝 CAPTION RULES (STRICT):\n"
-                "- 2–3 short sentences.\n"
-                "- Must sound like something you'd write after the storm — calm voice, sharp truth.\n"
-                "- Focus on sensory memory: what it felt like, smelled like, sounded like when it all fell apart.\n"
-                "- Must end with a **natural CTA** (save/share/comment) woven into emotion, not as a command.\n"
-                "- Example: “I kept apologizing for existing until it broke me. If you’ve been there, save this.”\n"
-                "- Avoid explanations. Avoid moral lessons. Just pure emotion in motion.\n\n"
+                "🩸 CAPTION RULES:\n"
+                "- 2–3 short lines max.\n"
+                "- Talk to the reader directly ('you'), not about yourself.\n"
+                "- Keep tone emotional, cinematic, and personal.\n"
+                "- Must include a call to action: 'Save this', 'Comment if it hits', or 'Share if it’s you'.\n"
+                "- Avoid vague motivational lines — show a *feeling* or a *moment*.\n\n"
 
-                "✅ EXAMPLE OUTPUT (Correct Style):\n"
-                "Framework 1:\n"
-                "Hook: I begged love to stay sober\n"
-                "Conclusion: It chose the bottle\n"
-                "Caption: I kept waiting for someone to save me from myself. Turns out, they were drowning too. Save this if you’ve ever mistaken pain for connection.\n\n"
-                
-                "Framework 2:\n"
-                "Hook: She kissed me like a goodbye\n"
-                "Conclusion: I still taste it\n"
-                "Caption: Some ghosts don’t haunt—they linger in your pulse. Share this if you’ve ever loved a memory that refused to die.\n\n"
-                
-                "Framework 3:\n"
-                "Hook: I became everything I feared\n"
-                "Conclusion: And felt alive again\n"
-                "Caption: Maybe healing isn’t soft. Maybe it’s burning the version they loved until only you remain. Comment if you understand.\n\n"
+                "⚠️ DIVERSITY ENFORCER:\n"
+                "- No two frameworks can share the same emotion, tone, or sentence rhythm.\n"
+                "- Each should feel like a different scene from the same emotional universe.\n"
+                "- Must include the input topic or its synonym clearly.\n\n"
 
-                "⚠️ OUTPUT FORMAT (STRICT):\n"
+                "📦 OUTPUT FORMAT:\n"
                 "Framework 1:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
                 "Framework 2:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
                 "Framework 3:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
-                "---\n"
-                "**Important:**\n"
-                "- Hooks = emotional violence or rebirth moments.\n"
-                "- Conclusions = calm after the war.\n"
-                "- Captions = human, sensory, cinematic — no fluff, no lessons.\n"
-                "- Avoid generic words and positivity — lean into heartbreak, ego death, silence, power.\n"
-                "- Make it feel like a confession that went viral."
             )
         }
     ],
-    "temperature": 1.15,
-    "max_tokens": 1800,
+    "temperature": 0.9,
+    "max_tokens": 2500,
     "top_p": 0.92,
-    "frequency_penalty": 0.2,
-    "presence_penalty": 0.4
+    "frequency_penalty": 0.5,
+    "presence_penalty": 0.6
 }
-
+  
 
     for attempt in range(3):
         try:
@@ -144,7 +120,6 @@ def generate_hooks(topic):
         "⚠️ HookyFY Lite is currently under heavy load.\nPlease try again shortly — your viral hooks are worth the wait. 💡",
         False
     )
-
 
 print("🔍 Keys loaded:",
       "Primary ✅" if MISTRAL_API_KEY else "Primary ❌",
