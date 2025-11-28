@@ -23,55 +23,74 @@ HEADERS_TEMPLATE = {
 def call_openrouter(topic, api_key, model):
     headers = HEADERS_TEMPLATE.copy()
     headers["Authorization"] = f"Bearer {api_key}"
-
     data = {
-    "model": model,
-    "messages": [
-        {
-            "role": "user",
-            "content": (
-                f"Topic: {topic}\n\n"
-                "Generate **exactly 3 unique viral Instagram post frameworks** about this topic.\n"
-                "Each must feel raw, emotional, and mirror the viewer’s own experiences — like you’re talking directly to their hidden pain or pride.\n\n"
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": (
+                    f"Topic: {topic}\n\n"
 
-                "🔥 HOOK RULES:\n"
-                "- Must directly relate to the topic — use its meaning or emotion, not just its word.\n"
-                "- 5–9 words.\n"
-                "- Different tone for each: 1) angry/defiant, 2) sad/regretful, 3) empowering/shocking.\n"
-                "- Avoid repeating structure or rhythm from previous hooks.\n"
-                "- Must make the viewer feel personally attacked, understood, or exposed.\n\n"
+                    "Your ONLY priority is to generate **3 insanely viral Instagram Reel hooks + conclusions + captions**, "
+                    "each one short, cinematic, emotionally sharp, and guaranteed to stop the scroll.\n\n"
 
-                "💥 CONCLUSION RULES:\n"
-                "- 3–6 words that emotionally flip the hook.\n"
-                "- Must *complete* the emotional arc — if the hook is pain, make the conclusion power or peace.\n"
-                "- Avoid generic words like 'success', 'goals', 'life'.\n\n"
+                    "All hooks MUST be between **5–9 words**.\n"
+                    "All conclusions MUST be between **3–6 words**.\n"
+                    "Captions MUST be 2–3 lines and end with a CTA.\n\n"
 
-                "🩸 CAPTION RULES:\n"
-                "- 2–3 short lines max.\n"
-                "- Talk to the reader directly ('you'), not about yourself.\n"
-                "- Keep tone emotional, cinematic, and personal.\n"
-                "- Must include a call to action: 'Save this', 'Comment if it hits', or 'Share if it’s you'.\n"
-                "- Avoid vague motivational lines — show a *feeling* or a *moment*.\n\n"
+                    "Each hook MUST come from a **different section** \n"
+                    "• Curiosity (mystery, open loop, hidden truth)\n"
+                    "• Shock (harsh truth, emotional hit)\n"
+                    "• Power (identity shift, dominance)\n"
+                    "• Relatable (human flaw, everyday struggle)\n"
+                    "• Motivation (urgency, discipline)\n\n"
 
-                "⚠️ DIVERSITY ENFORCER:\n"
-                "- No two frameworks can share the same emotion, tone, or sentence rhythm.\n"
-                "- Each should feel like a different scene from the same emotional universe.\n"
-                "- Must include the input topic or its synonym clearly.\n\n"
+                    "You MUST choose **3 different sections** every time. NEVER repeat a section.\n\n"
 
-                "📦 OUTPUT FORMAT:\n"
-                "Framework 1:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
-                "Framework 2:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
-                "Framework 3:\nHook: ...\nConclusion: ...\nCaption: ...\n\n"
-            )
-        }
-    ],
-    "temperature": 0.9,
-    "max_tokens": 2500,
-    "top_p": 0.92,
-    "frequency_penalty": 0.5,
-    "presence_penalty": 0.6
-}
-  
+                    "🔥 HOOK RULES (EXTREMELY IMPORTANT):\n"
+                    "- MUST stop the scroll instantly.\n"
+                    "- MUST feel viral, dangerous, or emotionally intense.\n"
+                    "- MUST feel visually cinematic for Reels.\n"
+                    "- MUST hit like a punch, revelation, or confrontation.\n"
+                    "- MUST match the psychology of its assigned section.\n"
+                    "- NO vague, soft, or generic lines.\n"
+                    "- NO filler words.\n\n"
+
+                    "💥 CONCLUSION RULES:\n"
+                    "- 3–6 words.\n"
+                    "- Must emotionally flip or amplify the hook.\n"
+                    "- Should feel like the 'drop' in a cinematic edit.\n"
+                    "- No generic words like 'success', 'life', 'goals'.\n\n"
+
+                    "📝 CAPTION RULES:\n"
+                    "- 2–3 short lines.\n"
+                    "- Speak directly to the viewer.\n"
+                    "- Emotional, personal, or cinematic tone.\n"
+                    "- MUST add a CTA (Save/Share/Comment).\n\n"
+
+                    "⚠️ DIVERSITY RULE:\n"
+                    "- All 3 must have different tone, rhythm, and emotional type.\n"
+                    "- No repetition of structure.\n"
+                    "- Avoid predictable patterns.\n\n"
+
+                    "📦 OUTPUT FORMAT (MANDATORY):\n"
+                    "---\n"
+                    "Hook 1 (Section: X):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "---\n"
+                    "Hook 2 (Section: Y):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "---\n"
+                    "Hook 3 (Section: Z):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "---"
+                )
+            }
+        ],
+        "temperature": 0.92,
+        "max_tokens": 1800,
+        "top_p": 0.92,
+        "frequency_penalty": 0.5,
+        "presence_penalty": 0.6
+    }
+
 
     for attempt in range(3):
         try:
