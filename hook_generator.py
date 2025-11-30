@@ -23,6 +23,7 @@ HEADERS_TEMPLATE = {
 def call_openrouter(topic, api_key, model):
     headers = HEADERS_TEMPLATE.copy()
     headers["Authorization"] = f"Bearer {api_key}"
+
     data = {
         "model": model,
         "messages": [
@@ -30,57 +31,70 @@ def call_openrouter(topic, api_key, model):
                 "role": "user",
                 "content": (
                     f"Topic: {topic}\n\n"
+                    "You are writing for a dark luxury / high-performance Instagram page.\n"
+                    "Your ONLY job is to generate **3 insanely viral Instagram Reel hooks + conclusions + captions**.\n"
+                    "Each one must feel like a punch in the face: sharp, emotional, cinematic, and built to stop the scroll.\n\n"
 
-                    "Your ONLY priority is to generate **3 insanely viral Instagram Reel hooks + conclusions + captions**, "
-                    "each one short, cinematic, emotionally sharp, and guaranteed to stop the scroll.\n\n"
+                    "All hooks MUST be between 5–9 words.\n"
+                    "All conclusions MUST be between 3–6 words.\n"
+                    "Captions MUST be 2–3 short lines and end with a CTA.\n\n"
 
-                    "All hooks MUST be between **5–9 words**.\n"
-                    "All conclusions MUST be between **3–6 words**.\n"
-                    "Captions MUST be 2–3 lines and end with a CTA.\n\n"
-
-                    "Each hook MUST come from a **different section** \n"
+                    "Each hook MUST come from a different sections \n"
                     "• Curiosity (mystery, open loop, hidden truth)\n"
                     "• Shock (harsh truth, emotional hit)\n"
-                    "• Power (identity shift, dominance)\n"
-                    "• Relatable (human flaw, everyday struggle)\n"
-                    "• Motivation (urgency, discipline)\n\n"
+                    "• Power (identity shift, dominance, control)\n"
+                    "• Relatable (daily struggle, self-sabotage, human flaw)\n"
+                    "• Motivation (urgency, discipline, action trigger)\n\n"
+                    "You MUST choose 3 different sections every time. NEVER repeat a section in the same output.\n\n"
 
-                    "You MUST choose **3 different sections** every time. NEVER repeat a section.\n\n"
-
-                    "🔥 HOOK RULES (EXTREMELY IMPORTANT):\n"
-                    "- MUST stop the scroll instantly.\n"
-                    "- MUST feel viral, dangerous, or emotionally intense.\n"
-                    "- MUST feel visually cinematic for Reels.\n"
-                    "- MUST hit like a punch, revelation, or confrontation.\n"
-                    "- MUST match the psychology of its assigned section.\n"
-                    "- NO vague, soft, or generic lines.\n"
-                    "- NO filler words.\n\n"
+                    "🔥 HOOK RULES (NON-NEGOTIABLE):\n"
+                    "- 5–9 words. No more.\n"
+                    "- Must feel viral, dangerous, or brutally honest.\n"
+                    "- Must create an immediate visual in the viewer’s mind.\n"
+                    "- Must either attack their comfort, ego, or secret fear.\n"
+                    "- Must clearly match the psychology of its section.\n"
+                    "- No cliches (no 'follow your dreams', 'believe in yourself', 'trust the process').\n"
+                    "- No soft language (avoid: maybe, kinda, sometimes, can, could).\n"
+                    "- Use strong verbs and concrete images (bleed, burn, rise, betray, kneel, etc.).\n\n"
 
                     "💥 CONCLUSION RULES:\n"
                     "- 3–6 words.\n"
-                    "- Must emotionally flip or amplify the hook.\n"
-                    "- Should feel like the 'drop' in a cinematic edit.\n"
-                    "- No generic words like 'success', 'life', 'goals'.\n\n"
+                    "- Must flip or amplify the hook emotionally (like a drop in an edit).\n"
+                    "- Should feel like a command, revelation, or verdict.\n"
+                    "- No generic words like 'success', 'life', 'goals', 'journey'.\n\n"
 
                     "📝 CAPTION RULES:\n"
                     "- 2–3 short lines.\n"
-                    "- Speak directly to the viewer.\n"
-                    "- Emotional, personal, or cinematic tone.\n"
-                    "- MUST add a CTA (Save/Share/Comment).\n\n"
+                    "- Speak directly to ONE viewer ('you').\n"
+                    "- Describe a feeling or moment, not vague advice.\n"
+                    "- Tone: cinematic, intense, personal.\n"
+                    "- MUST end with a clear CTA (Save/Share/Comment/Follow).\n\n"
 
                     "⚠️ DIVERSITY RULE:\n"
-                    "- All 3 must have different tone, rhythm, and emotional type.\n"
-                    "- No repetition of structure.\n"
-                    "- Avoid predictable patterns.\n\n"
+                    "- All 3 outputs must have different tone, rhythm, and emotional flavor.\n"
+                    "- Do NOT reuse phrasing, structure, or openings across hooks.\n"
+                    "- Avoid patterns like starting every hook with the same word.\n\n"
 
-                    "📦 OUTPUT FORMAT (MANDATORY):\n"
+                    "📦 OUTPUT FORMAT (MANDATORY, FOLLOW EXACTLY):\n"
                     "---\n"
-                    "Hook 1 (Section: X):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "Hook 1 (Section: X):\n"
+                    "Hook: ...\n"
+                    "Conclusion: ...\n"
+                    "Caption: ...\n"
+                    "CTA: ...\n"
                     "---\n"
-                    "Hook 2 (Section: Y):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
+                    "Hook 2 (Section: Y):\n"
+                    "Hook: ...\n"
+                    "Conclusion: ...\n"
+                    "Caption: ...\n"
+                    "CTA: ...\n"
                     "---\n"
-                    "Hook 3 (Section: Z):\nHook: ...\nConclusion: ...\nCaption: ...\nCTA: ...\n"
-                    "---"
+                    "Hook 3 (Section: Z):\n"
+                    "Hook: ...\n"
+                    "Conclusion: ...\n"
+                    "Caption: ...\n"
+                    "CTA: ...\n"
+                    "---\n"
                 )
             }
         ],
@@ -90,6 +104,7 @@ def call_openrouter(topic, api_key, model):
         "frequency_penalty": 0.5,
         "presence_penalty": 0.6
     }
+
 
 
     for attempt in range(3):
